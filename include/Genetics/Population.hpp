@@ -6,25 +6,30 @@
 #include <utility>
 #include <cmath>
 
-#include <BasePopulation.hpp>
-#include <Common/Math.hpp>
+#include <Common/Individual.hpp>
+#include <Common/BasePopulation.hpp>
+
+#include <Helpers/Math.hpp>
+
+#include <Genetics/Selector/StochasticAcceptanceSelector.hpp>
+
 
 namespace softcomp
 {
     namespace ga
     {
-        template<unsigned S, typename FitnessEvalT, typename SelectorT, unsigned EliteS = 4>
-        class Population : public BasePopulation<S, FitnessEvalT>
+        template<unsigned S, typename FitnessEvalT, template<typename> class SelectorT = StochasticAcceptanceSelector, unsigned EliteS = 4>
+        class Population : public BasePopulation<S, FitnessEvalT, Individual>
         {
             public:
 
-                using BasePopulationType = BasePopulation<S, FitnessEvalT>;
                 using FitnessEvaluatorType = FitnessEvalT;
-                using IndividualType = typename FitnessEvaluatorType::IndividualType;
-                using ChromossomeType = typename IndividualType::ChromossomeType;
+                using BasePopulationType = BasePopulation<S, FitnessEvaluatorType, Individual>;
+                using IndividualType = typename BasePopulationType::IndividualType;
+                using ChromossomeType = typename IndividualType::SolutionType;
                 using BaseType = typename ChromossomeType::BaseType;
                 using CrossoverType = typename ChromossomeType::CrossoverType;
-                using SelectorType = SelectorT;
+                using SelectorType = SelectorT<IndividualType>;
 
                 static const unsigned EliteSize = EliteS;
                 static const unsigned Size = S % 2 == 0 ? S : S + 1;
@@ -48,20 +53,20 @@ namespace softcomp
 
                 void next_step() override
                 {
-                    for (unsigned i = 0, j = 0; i < Size; ++i)
+                    for (int i = 0; i < Size; i++)
                     {
                         // selection
                         const IndividualType &a { selector.roullete_wheel(BasePopulationType::individuals) };
                         const IndividualType &b { selector.roullete_wheel(BasePopulationType::individuals) };
 
-                        ChromossomeType &ca { offspring[j++].chromossome };
-                        ChromossomeType &cb { offspring[j++].chromossome };
+                        ChromossomeType &ca { offspring[i].solution };
+                        ChromossomeType &cb { offspring[Size + i].solution };
 
-                        ca = a.chromossome;
-                        cb = b.chromossome;
+                        ca = a.solution;
+                        cb = b.solution;
 
                         // crossover
-                        CrossoverType::crossover(ca.code, cb.code);
+                        CrossoverType::crossover(ca.solution, cb.solution);
 
                         // mutation
                         ca.mutate();
@@ -71,7 +76,7 @@ namespace softcomp
                     fitness_evaluation(offspring);
                     elite.insert(elite.end(), offspring.begin(), offspring.end());
                     sort(elite);
-                    BasePopulationType::individuals = std::vector<IndividualType>(elite.begin(), elite.begin() + FullSize);
+                    BasePopulationType::individuals = std::vector<IndividualType>(elite.begin(), elite.begin() + Size);
                     elite = std::vector<IndividualType>(elite.begin(), elite.begin() + EliteSize);
                 }
 
@@ -79,7 +84,6 @@ namespace softcomp
                 {
                     return BasePopulationType::individuals.front();
                 }
-
 
                 void show()
                 {
@@ -94,11 +98,7 @@ namespace softcomp
                 std::vector<IndividualType> offspring;
                 std::vector<IndividualType> elite;
 
-                void show(std::vector<IndividualType> &individuals)
-                {
-                    for (const IndividualType &individual : individuals)
-                        individual.show();
-                }
+
 
                 void sort(std::vector<IndividualType> &inds)
                 {
@@ -113,7 +113,7 @@ namespace softcomp
 
                     for (IndividualType &individual : individuals)
                     {
-                        individual.w = BasePopulationType::fitness.evaluate(individual);
+                        individual.w = BasePopulationType::fitness.evaluate(individual.solution);
                         if (wmax < individual.w) wmax = individual.w;
                     }
 

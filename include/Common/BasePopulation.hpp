@@ -6,20 +6,18 @@
 #include <utility>
 #include <cmath>
 
+#include <Common/Individual.hpp>
+
 namespace softcomp
 {
-    template<unsigned S, typename FitnessEvalT, template<typename> class IndividualT>
+    template<unsigned S, typename FitnessEvalT, template<typename, typename RealT = double> class IndividualT = Individual>
     class BasePopulation
     {
         public:
 
             using FitnessEvaluatorType = FitnessEvalT;
-
             using SolutionType = typename FitnessEvaluatorType::SolutionType;
-
             using IndividualType = IndividualT<SolutionType>;
-
-            using BaseType = typename FitnessEvaluatorType::BaseType;
 
             static const unsigned PopulationSize = S % 2 == 0 ? S : S + 1;
 

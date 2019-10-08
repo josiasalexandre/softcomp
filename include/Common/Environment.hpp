@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <chrono>
 
 namespace softcomp
 {
@@ -22,12 +23,22 @@ namespace softcomp
             {
                 PopulationType population;
 
+                auto start = std::chrono::system_clock::now();
+
                 population.compute_fitness();
 
                 while(0 < steps-- && not population.has_converged())
                 {
                     population.next_step();
+                    // std::cout << "...................." << std::endl;
+                    // population.show();
                 }
+
+                auto end = std::chrono::system_clock::now();
+
+                std::chrono::duration<double> elapsed_seconds = end - start;
+
+                std::cout << "Elapsed Time: " << elapsed_seconds.count() << std::endl;
 
                 return population.get_best_individual();
             }

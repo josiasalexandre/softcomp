@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <Common/Math.hpp>
+#include <Helpers/Math.hpp>
 
 namespace softcomp
 {

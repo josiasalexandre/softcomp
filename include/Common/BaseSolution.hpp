@@ -1,7 +1,8 @@
 #pragma once
 
 #include <array>
-#include <Common/Math.hpp>
+#include <Eigen/Dense>
+#include <Helpers/Math.hpp>
 
 namespace softcomp
 {
