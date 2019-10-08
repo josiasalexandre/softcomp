@@ -11,7 +11,7 @@ namespace softcomp
     namespace pso
     {
         template<unsigned S>
-        class RastriginEvaluator : public FitnessEvaluator<Position<double, S>>
+        class RastriginEvaluator : public FitnessEvaluator<Position<double, S>, double>
         {
             public:
 
