@@ -28,9 +28,9 @@ namespace softcomp
 
                 RastriginEvaluator()
                 {
-                    PositionType::W = 0.9;
-                    PositionType::C1  = 0.5;
-                    PositionType::C2 = 0.5;
+                    PositionType::W = 0.4;
+                    PositionType::C1  = 0.3;
+                    PositionType::C2 = 0.7;
 
                     PositionType::min_pos_value = -Limit;
                     PositionType::max_pos_value =  Limit;

@@ -20,9 +20,9 @@ int main(int argc, char **argv) {
     using PSOFitnessEvaluatorType = softcomp::pso::RastriginEvaluator<2>;
     using PSOPositionType = typename PSOFitnessEvaluatorType::PositionType;
     using PSOIndividualType = softcomp::pso::Particle<PSOPositionType>;
-    using PSOPopulationType = softcomp::pso::Population<500, PSOFitnessEvaluatorType>;
+    using PSOPopulationType = softcomp::pso::Population<2500, PSOFitnessEvaluatorType>;
 
-    unsigned steps = 5000;
+    unsigned steps = 3000;
 
     // softcomp::Environment<GalgoPopulationType> galgo_environment;
     // GalgoIndividualType galgo_best { galgo_environment.run(steps) };

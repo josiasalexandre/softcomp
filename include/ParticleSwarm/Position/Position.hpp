@@ -40,9 +40,24 @@ namespace softcomp
                 {
                     for (unsigned i = 0; i < BasePositionType::Dim; ++i)
                     {
-                        BPT::velocity[i] =  BPT::W * BPT::velocity[i] + BPT::C1 * math::random() * (l[i] - BPT::solution[i]) + BPT::C2 * math::random() * (g[i] - BPT::solution[i]);
+                        BPT::velocity[i] = BPT::W * BPT::velocity[i] + BPT::C1 * math::random() * (l[i] - BPT::solution[i]) + BPT::C2 * math::random() * (g[i] - BPT::solution[i]);
 
-                        BPT::solution[i] += BPT::velocity[i];
+                        RealType x = BPT::solution[i] + BPT::velocity[i];
+
+                        if (BPT::min_pos_value > x)
+                        {
+                            BPT::solution[i] = BPT::min_pos_value;
+                            BPT::velocity[i] = -0.05 * BPT::velocity[i];
+                        }
+                        else if (BPT::max_pos_value < x)
+                        {
+                            BPT::solution[i] = BPT::max_pos_value;
+                            BPT::velocity[i] = -0.05 * BPT::velocity[i];
+                        }
+                        else
+                        {
+                            BPT::solution[i] = x;
+                        }
                     }
                 }
         };

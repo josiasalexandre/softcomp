@@ -44,6 +44,7 @@ namespace softcomp
             void show() const
             {
                 std::cout << "| ";
+
                 for (const BaseType &c : solution.solution)
                 {
                     std::cout << c << " ";
