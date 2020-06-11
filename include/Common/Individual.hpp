@@ -49,7 +49,7 @@ namespace softcomp
                 {
                     std::cout << c << " ";
                 }
-                std::cout << "| width fitness: " << w << " and nw: " << nw << std::endl;;
+                std::cout << "| with fitness: " << w << " and nw: " << nw << std::endl;;
             }
     };
 }

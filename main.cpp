@@ -24,9 +24,9 @@ int main(int argc, char **argv) {
 
     unsigned steps = 3000;
 
-    // softcomp::Environment<GalgoPopulationType> galgo_environment;
-    // GalgoIndividualType galgo_best { galgo_environment.run(steps) };
-    // galgo_best.show();
+    softcomp::Environment<GalgoPopulationType> galgo_environment;
+    GalgoIndividualType galgo_best { galgo_environment.run(steps) };
+    galgo_best.show();
 
 
     softcomp::Environment<PSOPopulationType> pso_environment;
